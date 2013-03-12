@@ -1,11 +1,18 @@
 <?php
+/*
+Fonctions de traitement, et d'interaction avec la base de donnees.
+Thomas BRODUSCH
+Test Stagiaire - SOIXANTECIRCUITS
+Mars 2013
+*/
+
 //Connection à la Base de donnée.
 include('DB_Connect.php');
 
 //Récuperation du nom de la fonction à traiter.
 $fonction = $_POST['fonction'];
 
-/*###### Obtenir les familles ######*/
+/*================================================ Obtenir les familles */
 
 if( $fonction === "get_family" ){
 	
@@ -29,7 +36,7 @@ if( $fonction === "get_family" ){
 
 
 
-/*###### Ajout famille ######*/
+/*================================================ Ajout famille */
 if( $fonction === "add_family"){
 	
 	
@@ -61,7 +68,7 @@ if( $fonction === "add_family"){
 }
 
 
-/*###### Ajout monstre ######*/
+/*================================================ Ajout monstre */
 if( $fonction === "add_monster"){
 
 	$name = $_POST['name'];
@@ -98,7 +105,7 @@ if( $fonction === "add_monster"){
 	$cnx = null; // Fermeture de la connexion
 }
 
-/*###### Get family ID ######*/
+/*================================================ Get family ID */
 function getFamilyID($family_name,$world_name){
 	
 		$req="SELECT * FROM family WHERE fam_name = '".$family_name."' AND fam_world = '".$world_name."' ;";

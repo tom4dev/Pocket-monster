@@ -1,3 +1,9 @@
+<!--
+Index
+Thomas BRODUSCH
+Test Stagiaire - SOIXANTECIRCUITS
+Mars 2013
+-->
 <!DOCTYPE html>
 <html lang="fr">
   <head>
