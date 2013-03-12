@@ -35,7 +35,7 @@
         <div class="links">
           
         </div>
-        Made by <a href="http://thomaspark.me">Thomas Brodusch</a>. <br/>
+        Made by <a href="http://www.twitter.com/thomasbrd">Thomas Brodusch</a>. <br/>
         Code licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>.<br/>
         Based on <a href="http://twitter.github.com/bootstrap/">Bootstrap</a>. Hosted on <a href="http://tom4dev.github.com/">GitHub</a>. Icons from <a href="http://fortawesome.github.com/Font-Awesome/">Font Awesome</a>. Web fonts from <a href="http://www.google.com/webfonts">Google</a>. </p>
       </footer>
