@@ -24,7 +24,7 @@ if( $fonction === "get_family" ){
 		if($count>0){
 
 			while($family = $result-> fetch(PDO::FETCH_ASSOC)){
-				echo '<option value="'.$family['fam_name'].'-'.$family['fam_world'].'">'.ucfirst($family['fam_name']).' ('.ucfirst($family['fam_world']).')</option>';
+				echo '<option value="'.$family['fam_id'].'">'.ucfirst($family['fam_name']).' ('.ucfirst($family['fam_world']).')</option>';
 			}
 			
 		}else{ echo'<option value="no_family">Veuillez créer au moins une famille </option>';}
@@ -74,26 +74,31 @@ if( $fonction === "add_monster"){
 	$name = $_POST['name'];
 	$size =$_POST['size'];
 	$age = $_POST['age'];
-	$family = $_POST['family'];
+	$family = $_POST['family'];//Contient un fam_id
 
-	//Image.
-	$_FILES['icone']['name']     //Le nom original du fichier, comme sur le disque du visiteur (exemple : mon_icone.png).
-	$_FILES['icone']['type']     //Le type du fichier. Par exemple, cela peut être « image/png ».
-	$_FILES['icone']['size']     //La taille du fichier en octets.
-	$_FILES['icone']['tmp_name'] //L'adresse vers le fichier uploadé dans le répertoire temporaire.
-	$_FILES['icone']['error']    //Le code d'erreur, qui permet de savoir si le fichier a bien été uploadé.
+	/*Image.
+	$_FILES['image']['name']     //Le nom original du fichier, comme sur le disque du visiteur (exemple : mon_icone.png).
+	$_FILES['image']['type']     //Le type du fichier. Par exemple, cela peut être « image/png ».
+	$_FILES['image']['size']     //La taille du fichier en octets.
+	$_FILES['image']['tmp_name'] //L'adresse vers le fichier uploadé dans le répertoire temporaire.
+	$_FILES['image']['error']    //Le code d'erreur, qui permet de savoir si le fichier a bien été uploadé.
 	
+	*/
+	  
+
+	//Monstre.
 	if( $family === "no_family"){
 		echo'Veuillez <a href="addFamily.php">créer une famille</a>.';
 	}
 
 	if( (!empty($name)) && (!empty($size)) && (!empty($age)) && (!empty($family)) && ($family != "no_family") ){
 		//On teste si un monstre portant le même nom, la même famille et résidant dans le même monde existe déja.
-			$req="SELECT * FROM monsters WHERE mo_name = '".$name."' AND mo_family ='".$family."'";
+			$req="SELECT * FROM monsters WHERE mo_name = '".$name."' AND mo_familyID ='".$family."'";
 			$result=$cnx->query($req);
 			$count = $result->rowCount(); 
 			
 			if($count>0){
+				echo  getFamilyName($family);
 				echo'Un monstre existe déja sous ce nom: <b>'.$name.'</b> dans cette famille (<b>'.$family.'</b>).';
 			}else{
 				//Si il n'existe pas on l'insere alors dans la famille.
@@ -124,5 +129,23 @@ function getFamilyID($family_name,$world_name){
 		$result->closeCursor();
 		$cnx = null; // Fermeture de la connexion
 }
+/*================================================ Get family Name */
+function getFamilyName($family_id){
+	
+		$req="SELECT * FROM family WHERE fam_id = '".$family_id."' ;";
+		$result=$cnx->query($req);
+		$count = $result->rowCount(); 
+		
+		if($count>0){
 
+			while($family = $result-> fetch(PDO::FETCH_ASSOC)){
+				return $family['fam_name'];
+			}
+			
+		}else{ echo'Aucune famille ne correspond à la recherche.';}
+		
+		
+		$result->closeCursor();
+		$cnx = null; // Fermeture de la connexion
+}
 ?>

@@ -1,7 +1,15 @@
 <?php
+
+/*
+Menu Navbar.
+Thomas BRODUSCH
+Test Stagiaire - SOIXANTECIRCUITS
+Mars 2013
+*/
+
 echo'
-<!-- Navbar
-    ================================================== -->
+<!-- Navbar 
+================================================== -->
  <div class="navbar navbar-fixed-top">
    <div class="navbar-inner">
      <div class="container">
