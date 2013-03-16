@@ -12,14 +12,14 @@ Mars 2013
 	 <link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/style.css" rel="stylesheet">
 	
-<script src="http://code.jquery.com/jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="js/jquery-1.9.1.min.js" type="text/javascript"></script>
 	
 	
 </head>
 <body>
 	<?php include('include/menu.php'); ?>
 
-	<form id="form" method="POST" action="#" enctype="multipart/form-data">
+	<form id="form" method="POST" action="#">
 		
 	<label>Nom:</label> <input type="text" name="name" />  <br/>
 	<label>Taille:</label> <input type="text" name="size" /> <br/>
@@ -31,6 +31,8 @@ Mars 2013
 		
 		
 	</form>
+
+	
 	<hr />
 	<div id="result"></div>
 
@@ -69,7 +71,7 @@ Mars 2013
      		url = 'fonctions.php';
  
   		//Envoi de la requête ajax.
-  		var posting = $.post( url, { fonction:fonction, name:name, size:size, age:age, family:family, } );
+  		var posting = $.post( url, { fonction:fonction, name:name, size:size, age:age, family:family	 } );
  
   		//Renvoi le resultat de la requete ajax dans le div #result.
   		posting.done(function(data) {
@@ -78,7 +80,6 @@ Mars 2013
 	
   		});
 	});
-
 	/*__________________________________________________________*/
 	// image.
 
@@ -86,5 +87,8 @@ Mars 2013
   
 	
 	</script>
+
+	<script src="js/main.js"></script>
+<script src="js/vendor/jquery.ui.widget.js"></script>
 </body>
 </html>

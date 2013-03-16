@@ -14,7 +14,7 @@ Mars 2013
 	  <link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/style.css" rel="stylesheet">
     
-	<script src="http://code.jquery.com/jquery-1.9.1.min.js" type="text/javascript"></script>
+	<script src="js/jquery-1.9.1.min.js" type="text/javascript"></script>
 	
 	
 	
@@ -24,7 +24,7 @@ Mars 2013
 
 	<form id="form" method="POST" action="#">
 		<label>Nom:</label> <input type="text" name="name" />  <br/>
-		<label>Monde:</label>  <input type="text" name="world" /> <br/>
+		<label>Monde:</label> <select> </select> <br/>
 		<label>Nombre Max:</label> <input type="text" name="nbMax" /> <br/>
 		
 		
@@ -36,6 +36,20 @@ Mars 2013
 	<div id="result"></div>
 	
 <script type="text/javascript">
+	// Ajout des options dans le select.
+	$(document).ready(function() {
+		
+ 		 var $form = $( this ),
+		fonction = 'get_world',
+      		url = 'fonctions.php';
+ 		 var posting = $.post( url, { fonction:fonction } );
+ 		 
+  		posting.done(function(data) {
+			var content = data;
+			$("select").append(content);
+	
+  		});
+	});
 	//Gestion du formulaire.
 	$("#form").submit(function(event) {
 		// Modifie le comportement normal du formulaire (stop l'envoi).
@@ -45,7 +59,7 @@ Mars 2013
  		 var $form = $( this ),
 		fonction = 'add_family',
       		name = $form.find( 'input[name="name"]' ).val(),
-	 	world = $form.find( 'input[name="world"]' ).val(),
+	 	world = $$form.find('select').val(),
  		nbMax = $form.find( 'input[name="nbMax"]' ).val(),
       		url = 'fonctions.php';
  
@@ -55,6 +69,7 @@ Mars 2013
   		//Renvoi le resultat de la requete ajax dans le div #result.
   		posting.done(function(data) {
 			var content = data;
+			alert(content);
 			$("#result").empty().append(content);
 	
   		});

@@ -7,7 +7,7 @@ Mars 2013
 */
 
 //Connection à la Base de donnée.
-include('DB_Connect.php');
+include_once('DB_Connect.php');
 
 //Récuperation du nom de la fonction à traiter.
 $fonction = $_POST['fonction'];
@@ -15,44 +15,105 @@ $fonction = $_POST['fonction'];
 /*================================================ Obtenir les familles */
 
 if( $fonction === "get_family" ){
-	
+
 
 		$req="SELECT * FROM family;";
 		$result=$cnx->query($req);
 		$count = $result->rowCount(); 
-		
+
 		if($count>0){
 
 			while($family = $result-> fetch(PDO::FETCH_ASSOC)){
-				echo '<option value="'.$family['fam_id'].'">'.ucfirst($family['fam_name']).' ('.ucfirst($family['fam_world']).')</option>';
+
+				$familyID = $family['fam_id'];
+				$value = ucfirst($family['fam_name']).' ('.ucfirst($family['fam_world']).')';
+
+				if( isFamilyComplete($familyID) ){
+					echo '<option value="'.$familyID.'">'.$value.'  - complete</option>';
+				}else{
+					echo '<option value="'.$familyID.'">'.$value.' - '.get_NbFamilyMembers($familyID).'/'.get_NbMaxFamily($familyID).'</option>';
+				}
 			}
-			
-		}else{ echo'<option value="no_family">Veuillez créer au moins une famille </option>';}
-		
-		
+
+		}else{ echo'<option value="no_family"> - </option>';}
+
+
 		$result->closeCursor();
 		$cnx = null; // Fermeture de la connexion
 }
+/*================================================ Obtenir les mondes */
+if( $fonction === "get_world" ){
 
 
+		$req="SELECT * FROM world;";
+		$result=$cnx->query($req);
+		$count = $result->rowCount(); 
 
-/*================================================ Ajout famille */
-if( $fonction === "add_family"){
-	
-	
+		if($count>0){
+
+			while($family = $result-> fetch(PDO::FETCH_ASSOC)){
+
+				$world = $family['wo_name'];
+				
+				echo '<option value="'.$world.'">'.ucfirst($world).'</option>';
+				
+			}
+
+		}else{ echo'<option value="no_world"> - </option>';}
+
+
+		$result->closeCursor();
+		$cnx = null; // Fermeture de la connexion
+}
+/*================================================ Ajout monde */ 
+if( $fonction === "add_world"){
+
 	$name = $_POST['name'];
-	$world =$_POST['world'];
-	$nbMax = $_POST['nbMax'];
-
-	//Test pour vérifier que le formulaire est complet
 	
-	if( (!empty($name)) && (!empty($world)) && (!empty($nbMax)) ){
+
+	if( !empty($name) ){
 		
-			//On teste si une famille portant le même nom et résidant dans le même monde existe déja.
-			$req="SELECT * FROM family WHERE fam_name = '".$name."' AND fam_world = '".$world."'";
+
+			//On teste si un monde portant le même nom existe déja.
+			$req="SELECT * FROM world WHERE wo_name = '".$name."' ;";
 			$result=$cnx->query($req);
 			$count = $result->rowCount(); 
-			
+
+			if($count>0){
+				
+				echo'Un monde existe déja sous ce nom: <b>'.$name.'</b>.<br/> Veuillez choisir un autre nom.';
+			}else{
+				//Si il n'existe pas on l'insere alors dans la base de donnee.
+				$req="INSERT INTO world VALUES ('".$name."');";
+				$result=$cnx->exec($req);
+				echo'Le monde <b>"' .$name .'"</b> , à été ajouté dans la base de donnee.';
+				
+			}
+		$result->closeCursor();
+		$cnx = null; //Fermeture de la connexion
+	}else{echo'Formulaire incomplet !';}
+	
+} 
+/*================================================ Ajout famille TO DO BUG A CORRIGER!! */
+if( $fonction === "add_family"){
+
+	$name = $_POST['name'];
+	$world = $_POST['world'];
+	$nbMax = $_POST['nbMax'];
+
+
+	if( $world === "no_world"){
+		echo'Veuillez <a href="addWorld.php">créer un monde</a>.';
+	}
+	//Test pour vérifier que le formulaire est complet
+	
+	if( (!empty($name)) && (!empty($world)) && (!empty($nbMax)) && ($world != "no_world") ){
+
+			//On teste si une famille portant le même nom et résidant dans le même monde existe déja.
+			$req="SELECT * FROM family WHERE fam_id = '".ucfirst($name).ucfirst($world)."' ;";
+			$result=$cnx->query($req);
+			$count = $result->rowCount(); 
+
 			if($count>0){
 				echo'Une famille existe déja sous ce nom: <b>'.$name.'</b> dans ce monde (<b>'.$world.'</b>).';
 			}else{
@@ -61,10 +122,12 @@ if( $fonction === "add_family"){
 				$result=$cnx->exec($req);
 				echo'La famille <b>"' .$name .'"</b> pouvant contenir <b>'.$nbMax.' membre(s)</b>, à été ajouté dans le monde <b>"'.$world.'"</b>.';
 			}
+			$result->closeCursor();
+		$cnx = null; //Fermeture de la connexion
 	}
 	else{echo'Formulaire incomplet !';}
-	$cnx = null; // Fermeture de la connexion
-
+	
+	
 }
 
 
@@ -76,15 +139,6 @@ if( $fonction === "add_monster"){
 	$age = $_POST['age'];
 	$family = $_POST['family'];//Contient un fam_id
 
-	/*Image.
-	$_FILES['image']['name']     //Le nom original du fichier, comme sur le disque du visiteur (exemple : mon_icone.png).
-	$_FILES['image']['type']     //Le type du fichier. Par exemple, cela peut être « image/png ».
-	$_FILES['image']['size']     //La taille du fichier en octets.
-	$_FILES['image']['tmp_name'] //L'adresse vers le fichier uploadé dans le répertoire temporaire.
-	$_FILES['image']['error']    //Le code d'erreur, qui permet de savoir si le fichier a bien été uploadé.
-	
-	*/
-	  
 
 	//Monstre.
 	if( $family === "no_family"){
@@ -92,13 +146,19 @@ if( $fonction === "add_monster"){
 	}
 
 	if( (!empty($name)) && (!empty($size)) && (!empty($age)) && (!empty($family)) && ($family != "no_family") ){
-		//On teste si un monstre portant le même nom, la même famille et résidant dans le même monde existe déja.
-			$req="SELECT * FROM monsters WHERE mo_name = '".$name."' AND mo_familyID ='".$family."'";
+		
+
+			//On teste si il reste de la place dans la famille choisi.
+		 if( isFamilyComplete($family) ){
+				echo'Cette famille est déjà complete. <br/> Veuillez choisir une autre famille non-compléte.';
+		}else{
+			//On teste si un monstre portant le même nom, la même famille et résidant dans le même monde existe déja.
+			$req="SELECT * FROM monsters WHERE mo_name = '".$name."' AND mo_family ='".$family."' ;";
 			$result=$cnx->query($req);
 			$count = $result->rowCount(); 
-			
+
 			if($count>0){
-				echo  getFamilyName($family);
+				
 				echo'Un monstre existe déja sous ce nom: <b>'.$name.'</b> dans cette famille (<b>'.$family.'</b>).';
 			}else{
 				//Si il n'existe pas on l'insere alors dans la famille.
@@ -106,46 +166,52 @@ if( $fonction === "add_monster"){
 				$result=$cnx->exec($req);
 				echo'Le monstre <b>"' .$name .'"</b> , à été ajouté dans la famille <b>"'.$family.'"</b>.';
 			}
+		}
 	}else{echo'Formulaire incomplet !';}
 	$cnx = null; // Fermeture de la connexion
 }
 
-/*================================================ Get family ID */
-function getFamilyID($family_name,$world_name){
-	
-		$req="SELECT * FROM family WHERE fam_name = '".$family_name."' AND fam_world = '".$world_name."' ;";
-		$result=$cnx->query($req);
-		$count = $result->rowCount(); 
-		
-		if($count>0){
+/*=========================================================================================
+==========================================================================================*/
+function get_NbFamilyMembers($familyID)	{
+	include('DB_Connect.php');
 
-			while($family = $result-> fetch(PDO::FETCH_ASSOC)){
-				return $family['fam_id'];
-			}
-			
-		}else{ echo'Aucune famille ne correspond à la recherche.';}
-		
-		
-		$result->closeCursor();
-		$cnx = null; // Fermeture de la connexion
+	$req="SELECT * FROM monsters WHERE mo_family = '".$familyID."' ;";
+	$result=$cnx->query($req);
+	$count = $result->rowCount(); 
+				
+		 return $count;
+
 }
-/*================================================ Get family Name */
-function getFamilyName($family_id){
-	
-		$req="SELECT * FROM family WHERE fam_id = '".$family_id."' ;";
-		$result=$cnx->query($req);
-		$count = $result->rowCount(); 
-		
-		if($count>0){
 
-			while($family = $result-> fetch(PDO::FETCH_ASSOC)){
-				return $family['fam_name'];
-			}
+function  get_NbMaxFamily($familyID)	{
+	include('DB_Connect.php');
+
+	$req="SELECT * FROM family WHERE fam_id ='".$familyID."' ;";
+	$result=$cnx->query($req);
+		
+	while($family = $result->fetch(PDO::FETCH_ASSOC)){
+		$nbMaxFamily = $family['fam_nbMax'];
+		return $nbMaxFamily;		
+	}
+	
+	
+}
+
+function isFamilyComplete($familyID) {
+		include('DB_Connect.php');
+		
+		if( get_NbFamilyMembers($familyID) < get_NbMaxFamily($familyID) ){
+			return false;
+		}
+		if (get_NbFamilyMembers($familyID) == get_NbMaxFamily($familyID) ){
 			
-		}else{ echo'Aucune famille ne correspond à la recherche.';}
+			return true;
+			
+		}
 		
 		
-		$result->closeCursor();
-		$cnx = null; // Fermeture de la connexion
+
+
 }
 ?>
