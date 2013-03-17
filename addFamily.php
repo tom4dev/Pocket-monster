@@ -59,7 +59,7 @@ Mars 2013
  		 var $form = $( this ),
 		fonction = 'add_family',
       		name = $form.find( 'input[name="name"]' ).val(),
-	 	world = $$form.find('select').val(),
+	 	world = $form.find('select').val(),
  		nbMax = $form.find( 'input[name="nbMax"]' ).val(),
       		url = 'fonctions.php';
  
@@ -69,7 +69,6 @@ Mars 2013
   		//Renvoi le resultat de la requete ajax dans le div #result.
   		posting.done(function(data) {
 			var content = data;
-			alert(content);
 			$("#result").empty().append(content);
 	
   		});

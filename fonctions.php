@@ -100,7 +100,7 @@ if( $fonction === "add_family"){
 	$name = $_POST['name'];
 	$world = $_POST['world'];
 	$nbMax = $_POST['nbMax'];
-
+	$famID = ucfirst($name).ucfirst($world) ;
 
 	if( $world === "no_world"){
 		echo'Veuillez <a href="addWorld.php">créer un monde</a>.';
@@ -110,7 +110,7 @@ if( $fonction === "add_family"){
 	if( (!empty($name)) && (!empty($world)) && (!empty($nbMax)) && ($world != "no_world") ){
 
 			//On teste si une famille portant le même nom et résidant dans le même monde existe déja.
-			$req="SELECT * FROM family WHERE fam_id = '".ucfirst($name).ucfirst($world)."' ;";
+			$req="SELECT * FROM family WHERE fam_id = '".$famID."' ;";
 			$result=$cnx->query($req);
 			$count = $result->rowCount(); 
 
@@ -118,12 +118,12 @@ if( $fonction === "add_family"){
 				echo'Une famille existe déja sous ce nom: <b>'.$name.'</b> dans ce monde (<b>'.$world.'</b>).';
 			}else{
 				//Si elle n'existe pas on insere alors la nouvelle famille.
-				$req="INSERT INTO family (fam_name,fam_world,fam_nbMax) VALUES ('".$name."','".$world."','".$nbMax."');";
+				$req="INSERT INTO family (fam_id,fam_name,fam_world,fam_nbMax) VALUES ('".$famID."','".$name."','".$world."','".$nbMax."');";
 				$result=$cnx->exec($req);
 				echo'La famille <b>"' .$name .'"</b> pouvant contenir <b>'.$nbMax.' membre(s)</b>, à été ajouté dans le monde <b>"'.$world.'"</b>.';
 			}
 			$result->closeCursor();
-		$cnx = null; //Fermeture de la connexion
+			$cnx = null; //Fermeture de la connexion
 	}
 	else{echo'Formulaire incomplet !';}
 	
