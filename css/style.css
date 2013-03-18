@@ -1,11 +1,66 @@
 
 
 body{
-	width:700px;
+	width:900px;
 	margin:0 auto 0 auto;
 
 }
 #form {
-	margin: 100px auto 0px auto;
+	margin-top: 100px ;
+	
 
+}
+#formFamily {
+	margin-top: 10px ;
+	
+
+}
+.line{
+	display:inline;
+}
+
+input[type=radio]{
+	margin-left:5px;
+	margin-right:10px;
+}
+#world{
+	border-radius: 5px;
+	width: auto;
+	height:auto;
+	border:1px solid white;
+	padding:20px 5px 5px 20px;
+	text-align:center;
+
+
+}
+#family{
+	
+	
+}
+#description{
+	display:none;
+	margin:0px auto 5px auto;
+	border:1px solid white;
+	border-radius: 5px;
+	width: auto;
+	height:auto;
+	
+	padding-top:5px;
+	padding-bottom:5px;
+}
+
+#photo{
+	background-color:white;
+	padding-top:5px;	
+	width:200px;
+	height:200px;
+	
+}
+
+#infos{
+	
+	width: 600px;
+	height:200px;
+	background-color: #252A30;
+	border-radius:3px;
 }

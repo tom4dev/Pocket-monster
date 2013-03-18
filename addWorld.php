@@ -36,29 +36,30 @@ Mars 2013
 	<div id="result"></div>
 	
 <script type="text/javascript">
-	/* attach a submit handler to the form */
+
+	/*Gestion du formulaire, ajout d'un Monde.
+	*__________________________________________________________*/
 	$("#form").submit(function(event) {
 	
  
-  /* stop form from submitting normally */
-  event.preventDefault();
+ 		 // Modifie le comportement normal du formulaire (stop l'envoi).
+  		event.preventDefault();
  
-  /* get some values from elements on the page: */
-  var $form = $( this ),
-	fonction = 'add_world',
-      	name = $form.find( 'input[name="name"]' ).val(),
-     	url = 'fonctions.php';
+  		// Variables composants la requête ajax, issues du formulaire.
+  		var $form = $( this ),
+		fonction = 'add_world',
+      		name = $form.find( 'input[name="name"]' ).val(),
+     		url = 'functions_add.php';
  
-  /* Send the data using post */
-  var posting = $.post( url, { fonction:fonction, name:name} );
+ 		//Envoi de la requête ajax.
+  		var posting = $.post( url, { fonction:fonction, name:name} );
  
-  /* Put the results in a div */
-  posting.done(function(data) {
-	var content = data;
-	$("#result").empty().append(content);
-	
-  });
-});
+		//Renvoi le resultat de la requete ajax dans le div #result.
+  		posting.done(function(data) {
+			var content = data;
+			$("#result").empty().append(content);
+		});
+	});
 	
 	</script>
 	

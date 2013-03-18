@@ -12,60 +12,8 @@ include_once('DB_Connect.php');
 //Récuperation du nom de la fonction à traiter.
 $fonction = $_POST['fonction'];
 
-/*================================================ Obtenir les familles */
-
-if( $fonction === "get_family" ){
-
-
-		$req="SELECT * FROM family;";
-		$result=$cnx->query($req);
-		$count = $result->rowCount(); 
-
-		if($count>0){
-
-			while($family = $result-> fetch(PDO::FETCH_ASSOC)){
-
-				$familyID = $family['fam_id'];
-				$value = ucfirst($family['fam_name']).' ('.ucfirst($family['fam_world']).')';
-
-				if( isFamilyComplete($familyID) ){
-					echo '<option value="'.$familyID.'">'.$value.'  - complete</option>';
-				}else{
-					echo '<option value="'.$familyID.'">'.$value.' - '.get_NbFamilyMembers($familyID).'/'.get_NbMaxFamily($familyID).'</option>';
-				}
-			}
-
-		}else{ echo'<option value="no_family"> - </option>';}
-
-
-		$result->closeCursor();
-		$cnx = null; // Fermeture de la connexion
-}
-/*================================================ Obtenir les mondes */
-if( $fonction === "get_world" ){
-
-
-		$req="SELECT * FROM world;";
-		$result=$cnx->query($req);
-		$count = $result->rowCount(); 
-
-		if($count>0){
-
-			while($family = $result-> fetch(PDO::FETCH_ASSOC)){
-
-				$world = $family['wo_name'];
-				
-				echo '<option value="'.$world.'">'.ucfirst($world).'</option>';
-				
-			}
-
-		}else{ echo'<option value="no_world"> - </option>';}
-
-
-		$result->closeCursor();
-		$cnx = null; // Fermeture de la connexion
-}
-/*================================================ Ajout monde */ 
+/*=========================================================================================
+================================================================== Ajout monde */ 
 if( $fonction === "add_world"){
 
 	$name = $_POST['name'];
@@ -94,7 +42,8 @@ if( $fonction === "add_world"){
 	}else{echo'Formulaire incomplet !';}
 	
 } 
-/*================================================ Ajout famille TO DO BUG A CORRIGER!! */
+/*=========================================================================================
+==================================================================== Ajout famille */
 if( $fonction === "add_family"){
 
 	$name = $_POST['name'];
@@ -130,16 +79,17 @@ if( $fonction === "add_family"){
 	
 }
 
-
-/*================================================ Ajout monstre */
+/*=========================================================================================
+==================================================================== Ajout monstre */
 if( $fonction === "add_monster"){
 
 	$name = $_POST['name'];
 	$size =$_POST['size'];
 	$age = $_POST['age'];
 	$family = $_POST['family'];//Contient un fam_id
+	$image = 'default.jpg';
 
-
+		
 	//Monstre.
 	if( $family === "no_family"){
 		echo'Veuillez <a href="addFamily.php">créer une famille</a>.';
@@ -162,17 +112,18 @@ if( $fonction === "add_monster"){
 				echo'Un monstre existe déja sous ce nom: <b>'.$name.'</b> dans cette famille (<b>'.$family.'</b>).';
 			}else{
 				//Si il n'existe pas on l'insere alors dans la famille.
-				$req="INSERT INTO monsters VALUES ('".$name."','".$family."','".$size."','".$age."');";
+				$req="INSERT INTO monsters VALUES ('".$name."','".$family."','".$size."','".$age."','".$image."');";
+				
 				$result=$cnx->exec($req);
-				echo'Le monstre <b>"' .$name .'"</b> , à été ajouté dans la famille <b>"'.$family.'"</b>.';
+				echo 'Le monstre <b>"' .$name .'"</b> , à été ajouté dans la famille <b>"'.$family.'"</b>.';
 			}
 		}
-	}else{echo'Formulaire incomplet !';}
-	$cnx = null; // Fermeture de la connexion
+	}else{echo'Formulaire incomplet !';}	
+	$cnx = null; // Fermeture de la connexion 	
 }
 
 /*=========================================================================================
-==========================================================================================*/
+======================================================================Fonctions annexes */
 function get_NbFamilyMembers($familyID)	{
 	include('DB_Connect.php');
 
@@ -199,6 +150,9 @@ function  get_NbMaxFamily($familyID)	{
 }
 
 function isFamilyComplete($familyID) {
+
+
+
 		include('DB_Connect.php');
 		
 		if( get_NbFamilyMembers($familyID) < get_NbMaxFamily($familyID) ){
@@ -214,4 +168,6 @@ function isFamilyComplete($familyID) {
 
 
 }
+
+
 ?>

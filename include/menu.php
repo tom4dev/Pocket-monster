@@ -24,7 +24,7 @@ echo'
           <li><a href="addMonster.php">Ajouter Monstre</a></li>
           <li><a id="swatch-link" href="addFamily.php">Ajouter famille</a></li>
 	<li><a id="swatch-link" href="addWorld.php">Ajouter Monde</a></li>
-	<li><a id="swatch-link" href="addWorld.php">Worlds Viewer</a></li>
+	<li><a id="swatch-link" href="worldView.php">Worlds Viewer</a></li>
           
             </ul>
           </li>

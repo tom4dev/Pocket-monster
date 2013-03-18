@@ -4,6 +4,33 @@ Thomas BRODUSCH
 Test Stagiaire - SOIXANTECIRCUITS
 Mars 2013
 -->
+<?php
+
+function showWorld(){
+	require('DB_connect.php');
+	require('class/ClassWorld.php');
+
+		$req="SELECT * FROM world;";
+		$result=$cnx->query($req);
+		$count = $result->rowCount(); 
+
+		if($count>0){
+
+			while($world = $result-> fetch(PDO::FETCH_ASSOC)){
+
+				//Creation de l'objet world.
+				$worldObjet = new world($world['wo_name']);
+				//Affichage: voir "ClassWorld.php".
+				$worldObjet->show_select();
+			}
+		
+		}else{ echo'<p>Pas de monde ! Veuillez <a href="addWorld.php">créer un monde</a></p>';}
+
+		$result->closeCursor();
+		$cnx = null; // Fermeture de la connexion
+}
+
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -24,7 +51,7 @@ Mars 2013
 
 	<form id="form" method="POST" action="#">
 		<label>Nom:</label> <input type="text" name="name" />  <br/>
-		<label>Monde:</label> <select> </select> <br/>
+		<label>Monde:</label> <select> <?php showWorld(); ?></select> <br/>
 		<label>Nombre Max:</label> <input type="text" name="nbMax" /> <br/>
 		
 		
@@ -36,21 +63,9 @@ Mars 2013
 	<div id="result"></div>
 	
 <script type="text/javascript">
-	// Ajout des options dans le select.
-	$(document).ready(function() {
-		
- 		 var $form = $( this ),
-		fonction = 'get_world',
-      		url = 'fonctions.php';
- 		 var posting = $.post( url, { fonction:fonction } );
- 		 
-  		posting.done(function(data) {
-			var content = data;
-			$("select").append(content);
-	
-  		});
-	});
-	//Gestion du formulaire.
+
+	/*Gestion du formulaire, ajout d'une Famille.
+	*__________________________________________________________*/
 	$("#form").submit(function(event) {
 		// Modifie le comportement normal du formulaire (stop l'envoi).
   		event.preventDefault();
@@ -61,7 +76,7 @@ Mars 2013
       		name = $form.find( 'input[name="name"]' ).val(),
 	 	world = $form.find('select').val(),
  		nbMax = $form.find( 'input[name="nbMax"]' ).val(),
-      		url = 'fonctions.php';
+      		url = 'functions_add.php';
  
   		//Envoi de la requête ajax.
   		var posting = $.post( url, { fonction:fonction, name:name, world:world, nbMax:nbMax } );
@@ -70,10 +85,8 @@ Mars 2013
   		posting.done(function(data) {
 			var content = data;
 			$("#result").empty().append(content);
-	
-  		});
-	});//Fin gestion du formulaire.
-	/*____________________________________________________*/
+		});
+	});
 	
 	</script>
 	
