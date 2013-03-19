@@ -24,7 +24,7 @@ function showWorld(){
 				$worldObjet->show_radio();
 			}
 	
-		}else{ echo'<p>Pas de monde ! Veuillez <a href="addWorld.php">créer un monde</a></p>';}
+		}else{ echo'<p>Veuillez <a href="addWorld.php">créer un monde</a></p>';}
 
 		$result->closeCursor();
 		$cnx = null; // Fermeture de la connexion
@@ -123,9 +123,7 @@ function showMonsters(){
 	/*Rafraichissement du Listing de toutes les familles dans SELECT, si clic utilisateur sur un Monde (input[type=radio]).
 	*___________________________________________________________________________________________________________________*/
 		$('input[type="radio"]').click(function(){
-			
-		alert($('input[name="world"]:checked').val());
-
+		
 		var fonction = 'get_family',
 		world = $('input[name="world"]:checked').val(),
       		url = 'functions_get.php';

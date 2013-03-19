@@ -22,18 +22,17 @@ Mars 2013
 </head>
 <body>
 	<?php include('include/menu.php'); ?>
-	<br/><br/><br/>
 	
 	<form id="form" method="POST" action="#">
-		<label>Nom:</label> <input type="text" name="name" />  <br/>
+		<div class="containForm"> <label>Nom:</label> <input type="text" name="name" />  </div><br/>
 		
 		
-	<input type="submit" class="btn btn-success btn-large" id="button" value="Ajouter un monde !"/>
+	<div class="center"><input type="submit" class="btn btn-success btn-large" id="button" value="Ajouter un monde !"/></div>
 		
 		
 	
 	<hr />
-	<div id="result"></div>
+	<div id="result" class="center"></div>
 	
 <script type="text/javascript">
 

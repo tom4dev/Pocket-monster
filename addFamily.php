@@ -15,7 +15,7 @@ function showWorld(){
 		$count = $result->rowCount(); 
 
 		if($count>0){
-
+			echo'<select>';
 			while($world = $result-> fetch(PDO::FETCH_ASSOC)){
 
 				//Creation de l'objet world.
@@ -23,8 +23,8 @@ function showWorld(){
 				//Affichage: voir "ClassWorld.php".
 				$worldObjet->show_select();
 			}
-		
-		}else{ echo'<p>Pas de monde ! Veuillez <a href="addWorld.php">créer un monde</a></p>';}
+			echo'</select>';
+		}else{ echo'<p>Veuillez <a href="addWorld.php">créer un monde</a></p>';}
 
 		$result->closeCursor();
 		$cnx = null; // Fermeture de la connexion
@@ -50,19 +50,31 @@ function showWorld(){
 	<?php include('include/menu.php'); ?>
 
 	<form id="form" method="POST" action="#">
-		<label>Nom:</label> <input type="text" name="name" />  <br/>
-		<label>Monde:</label> <select> <?php showWorld(); ?></select> <br/>
-		<label>Nombre Max:</label> <input type="text" name="nbMax" /> <br/>
+		<div class="containForm"> <label>Nom:</label> <input type="text" name="name" /> </div>  <br/>
+		<div class="containForm"> <label>Monde:</label>  <div id="listWorld"><?php showWorld(); ?></div> </div><br/>
+		<div class="containForm"> <label>Nombre Max:</label> <input type="text" name="nbMax" /> </div><br/>
 		
 		
-	<input type="submit" class="btn btn-success btn-large" id="button" value="Ajouter une famille !"/>
+	<div class="center"><input type="submit" class="btn btn-success btn-large center" id="button" value="Ajouter une famille !"/></div>
 		
 		
 	</form>
 	<hr />
-	<div id="result"></div>
+	<div id="result" class="center"></div>
 	
 <script type="text/javascript">
+$("document").ready(function() {	
+	/*Listing des mondes dans SELECT, au chargement de la page.
+	*___________________________________________________________________
+		var fonction = 'get_world',
+      		url = 'functions_get.php';
+ 		var posting = $.post( url, { fonction:fonction } );
+ 		 
+  		 posting.done(function(data) {
+			 var content = data;
+			$("#listWorld").empty().append(content);
+	
+  			});	*/
 
 	/*Gestion du formulaire, ajout d'une Famille.
 	*__________________________________________________________*/
@@ -87,6 +99,7 @@ function showWorld(){
 			$("#result").empty().append(content);
 		});
 	});
+});
 	
 	</script>
 	

@@ -21,26 +21,30 @@ Mars 2013
 
 	<form id="form" method="POST" action="#">
 		
-	<label>Nom:</label> <input type="text" name="name" />  <br/>
-	<label>Taille:</label> <input type="text" name="size" /> <br/>
-	<label>Age:</label>	<input type="text" name="age" /> <br/>
-	<label>Famille:</label> <div id="select"> <!-- Requête AJAX--> </div><br/>
+	<div class="containForm"> <label>Nom:</label> <input type="text" name="name" />  </div><br/>
+	<div class="containForm"> <label>Taille:</label> <input type="text" name="size" /> </div><br/>
+	<div class="containForm"> <label>Age:</label>	<input type="text" name="age" /> </div><br/>
+	<div class="containForm"> <label>Famille:</label> <div id="select"> <!-- Requête AJAX--> </div> </div><br/>
 		
 	
-	<input type="submit" class="btn btn-primary btn-large" id="button"  value="Ajouter un monstre !"/>
+	<div class="center"> <input type="submit" class="center btn btn-primary btn-large" id="button"  value="Ajouter un monstre !"/></div>
 		
 		
 	</form>
 
 	
 	<hr />
-	<div id="result"></div>
+	<div id="result" class="center"></div>
 
 
 <script type="text/javascript">	
-	 
+	$(document).ready(function(){
+		listingFamily();
+	});
+	
 	/*Listing de toutes les familles dans SELECT.
 	*__________________________________________________________*/
+		function listingFamily() {
 		var fonction = 'get_family',
       		url = 'functions_get.php';
  		var posting = $.post( url, { fonction:fonction, } );
@@ -50,10 +54,12 @@ Mars 2013
 			$("#select").empty().append(content);
 	
   			});
+		}
 	
 	/*Gestion du formulaire, ajout du monstre
 	*__________________________________________________________*/
 	$("#form").submit(function(event) {
+		
 		// Modifie le comportement normal du formulaire (stop l'envoi).
   		event.preventDefault();
  			
@@ -72,9 +78,12 @@ Mars 2013
  
   		//Renvoi le resultat de la requete ajax dans le div #result.
   		posting.done(function(data) {
+
+			//On rafraichi la liste des familles.
+			listingFamily();
 			var content = data;
 			$("#result").empty().append(content);
-	
+			
   		});
 	});
 	
