@@ -64,17 +64,7 @@ function showWorld(){
 	
 <script type="text/javascript">
 $("document").ready(function() {	
-	/*Listing des mondes dans SELECT, au chargement de la page.
-	*___________________________________________________________________
-		var fonction = 'get_world',
-      		url = 'functions_get.php';
- 		var posting = $.post( url, { fonction:fonction } );
- 		 
-  		 posting.done(function(data) {
-			 var content = data;
-			$("#listWorld").empty().append(content);
 	
-  			});	*/
 
 	/*Gestion du formulaire, ajout d'une Famille.
 	*__________________________________________________________*/

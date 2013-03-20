@@ -13,6 +13,6 @@ try {
 	$cnx = new PDO($bdd, $login, $mdp);
 }
 catch (PDOException $error) {
-	die("Erreur de connexion : " . $error->getMessage() );
+	die("Erreur de connexion à la base de données: " . $error->getMessage() );
 }
 ?>

@@ -18,7 +18,7 @@ Mars 2013
     <![endif]-->
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    
+    <link href="css/style.css" rel="stylesheet">
 
   </head>
 
@@ -31,7 +31,15 @@ Mars 2013
    	<div class="container">
 		<header class="jumbotron subhead" id="overview">
 		<br/><br/><hr />
-  		
+  		<div class="containForm">
+
+			<h5>	Créer les tables: "monsters" , "family" & "world" dans la base de donnée: "pocketMonsters"<br/>
+				
+				
+			</h5>
+			<div class="center"> <input type="submit" class="center btn btn-primary btn-large" id="button"  value="Lancer l'installation !"/></div> 
+
+		</div><br /><br/>
 		<div class="row">
 	    		<p>Git repo (master) by <a href="https://github.com/soixantecircuits/Pocket-monster">igab</a></p>
 
@@ -129,7 +137,33 @@ Idea is not to make the whole app but to go as far as possible with each of the 
     <!-- Le javascript ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/jquery-1.9.1.min.js"></script>
+	<script>
+	/*Gestion du formulaire, ajout du monstre
+	*__________________________________________________________*/
+	$("input[type='submit']").click(function() {
+			
+	
+		// Modifie le comportement normal du formulaire (stop l'envoi).
+  		//event.preventDefault();
+ 			
+  		// Variables composants la requête ajax, issues du formulaire.
+  		var 
+		fonction = 'install_db',
+      		url = 'DB_install.php';
  
+  		//Envoi de la requête ajax.
+  		var posting = $.post( url, { fonction:fonction } );
+ 
+  		//Renvoi le resultat de la requete ajax dans le div #result.
+  		posting.done(function(data) {
 
+			
+			var content = data;
+			$("h5").empty().append(content);
+			
+  		});
+	});
+ 
+	</script>
   </body>
 </html>

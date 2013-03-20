@@ -24,7 +24,7 @@ if( $fonction === "get_family" ){
 		if( !empty($world) ){
 			$req="SELECT * FROM family WHERE fam_world ='".$world."';";
 		}else{ $req="SELECT * FROM family;"; }
-
+		
 		$result=$cnx->query($req);
 		$count = $result->rowCount(); 
 
